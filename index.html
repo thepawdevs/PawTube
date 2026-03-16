@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="PawTube - A distraction-free, privacy-enhanced YouTube video player by PawDevs.">
+    <title>PawTube | Distraction-Free Player</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@500;700;800&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0" />
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container" id="main-container">
+        <header>
+            <h1>PawTube 🐾</h1>
+            <p class="subtitle">Distraction-free privacy player</p>
+        </header>
+        
+        <div class="search-section">
+            <div class="search-container" id="search-box">
+                <input type="text" id="url-input" placeholder="Paste YouTube link here..." autocomplete="off">
+                <button onclick="processInput()" aria-label="Play">
+                    <span class="material-symbols-rounded">play_arrow</span>
+                </button>
+            </div>
+            
+            <div class="settings-row">
+                <label class="toggle-switch">
+                    <input type="checkbox" id="autoplay-toggle" checked>
+                    <span class="slider"></span>
+                </label>
+                <span class="settings-label">Autoplay Video</span>
+            </div>
+        </div>
+
+        <div class="player-wrapper" id="player-wrapper">
+            <div class="empty-state" id="empty-state">
+                <span class="material-symbols-rounded pulse">smart_display</span>
+                <h3>Ready to Watch</h3>
+                <p style="margin:0; font-size:0.9rem;">Paste a URL above to load the player</p>
+            </div>
+            
+            <iframe id="video-frame" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen>
+            </iframe>
+        </div>
+
+        <div class="controls">
+            <button class="control-btn" onclick="toggleTheaterMode()" id="theater-btn">
+                <span class="material-symbols-rounded" id="theater-icon">width_full</span>
+                Theater Mode
+            </button>
+            <button class="control-btn" id="bg-playback-btn" onclick="toggleBackgroundPlayback()">
+                <span class="material-symbols-rounded" id="bg-icon">headphones</span>
+                <span id="bg-text">Background Play</span>
+            </button>
+            <button class="control-btn" onclick="requestFloatingWindow()">
+                <span class="material-symbols-rounded">picture_in_picture_alt</span>
+                Floating Window
+            </button>
+            <button class="control-btn" onclick="shareCurrentVideo()">
+                <span class="material-symbols-rounded">share</span>
+                Share Link
+            </button>
+        </div>
+
+        <div class="history-container" id="history-container">
+            <div class="history-header">
+                <div class="history-title">
+                    <span class="material-symbols-rounded" style="color: var(--primary-cyan);">history</span> Recent Watches
+                </div>
+                <button class="clear-btn" onclick="clearHistory()">
+                    <span class="material-symbols-rounded" style="font-size: 16px;">delete</span> Clear
+                </button>
+            </div>
+            <div class="history-list" id="history-list">
+                </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="crafted-with">
+            Crafted with 🐾 by PawDevs
+        </div>
+        
+        <div class="social-links">
+            <a href="https://github.com/pawdevs" target="_blank" class="social-btn" aria-label="GitHub">
+                <i class="fa-brands fa-github"></i>
+            </a>
+            <a href="https://pawdevs.com" target="_blank" class="social-btn" aria-label="Website">
+                <span class="material-symbols-rounded">language</span>
+            </a>
+            <a href="mailto:hello@pawdevs.com" class="social-btn" aria-label="Email">
+                <span class="material-symbols-rounded">mail</span>
+            </a>
+        </div>
+
+        <div class="footer-content">
+            PawTube is a standalone utility project created for privacy testing.<br>
+            It does not collect user data. All rights reserved by PawDevs.
+        </div>
+    </footer>
+
+    <div id="toast" class="toast"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>

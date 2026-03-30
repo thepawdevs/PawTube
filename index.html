@@ -1,115 +1,362 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="PawTube - A distraction-free, privacy-enhanced YouTube video player by PawDevs.">
-    <title>PawTube | Distraction-Free Player</title>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@500;700;800&display=swap" rel="stylesheet">
-    
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0" />
-    
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="PawTube — Distraction-free, privacy-enhanced YouTube player by PawDevs." />
+  <title>PawTube | Distraction-Free Player</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=DM+Sans:opsz,wght@9..40,400;9..40,500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0" />
+  <style>
+    :root{--bg:#0c0f12;--surface:#131920;--surface-2:#1a2330;--surface-3:#1f2b39;--border:rgba(255,255,255,.07);--border-hi:rgba(255,255,255,.13);--cyan:#00cba9;--cyan-dim:rgba(0,203,169,.15);--cyan-dark:rgba(0,203,169,.08);--txt:#e8edf2;--txt2:#7e96a8;--muted:#49606f;--r-sm:10px;--r-md:16px;--r-lg:22px;--r-xl:28px;--f-d:'Outfit',sans-serif;--f-b:'DM Sans',sans-serif;--t:.22s cubic-bezier(.4,0,.2,1)}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    body{background:var(--bg);color:var(--txt);font-family:var(--f-b);min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:32px 16px 0}
+    .app{width:100%;max-width:860px;display:flex;flex-direction:column;gap:20px}
+
+    /* HEADER */
+    header{display:flex;align-items:center;justify-content:space-between;padding:4px 0 8px}
+    .brand{display:flex;flex-direction:column;gap:2px}
+    .brand h1{font-family:var(--f-d);font-size:1.65rem;font-weight:800;letter-spacing:-.02em;line-height:1}
+    .brand h1 .accent{color:var(--cyan)}
+    .brand .sub{font-size:.73rem;font-weight:500;color:var(--muted);letter-spacing:.05em;text-transform:uppercase}
+    .badge{display:flex;align-items:center;gap:5px;padding:5px 11px 5px 8px;background:var(--cyan-dark);border:1px solid rgba(0,203,169,.2);border-radius:999px;font-size:.7rem;font-weight:600;color:var(--cyan);letter-spacing:.03em;white-space:nowrap}
+    .badge .material-symbols-rounded{font-size:14px}
+
+    /* SEARCH */
+    .search-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);padding:14px 16px 12px;display:flex;flex-direction:column;gap:11px;transition:border-color var(--t),box-shadow var(--t)}
+    .search-card:focus-within{border-color:rgba(0,203,169,.35);box-shadow:0 0 0 3px var(--cyan-dark)}
+    .input-row{display:flex;align-items:center;gap:10px}
+    .input-icon{flex-shrink:0;color:var(--muted);font-size:20px;transition:color var(--t)}
+    .search-card:focus-within .input-icon{color:var(--cyan)}
+    #url-input{flex:1;background:transparent;border:none;outline:none;font-family:var(--f-b);font-size:.925rem;color:var(--txt);caret-color:var(--cyan)}
+    #url-input::placeholder{color:var(--muted)}
+    .play-btn{flex-shrink:0;display:flex;align-items:center;gap:5px;padding:9px 18px;background:var(--cyan);color:#04120f;border:none;border-radius:var(--r-md);font-family:var(--f-d);font-size:.85rem;font-weight:700;cursor:pointer;transition:background var(--t),transform var(--t),box-shadow var(--t)}
+    .play-btn:hover{background:#04e8c2;box-shadow:0 4px 18px rgba(0,203,169,.35);transform:translateY(-1px)}
+    .play-btn:active{transform:translateY(0);box-shadow:none}
+    .play-btn .material-symbols-rounded{font-size:18px}
+    .settings-row{display:flex;align-items:center;gap:10px;padding-top:10px;border-top:1px solid var(--border)}
+    .settings-label{font-size:.8rem;font-weight:500;color:var(--txt2)}
+    .toggle-switch{position:relative;width:38px;height:22px;cursor:pointer}
+    .toggle-switch input{display:none}
+    .toggle-switch .slider{position:absolute;inset:0;background:var(--surface-3);border:1px solid var(--border-hi);border-radius:999px;transition:background var(--t),border-color var(--t)}
+    .toggle-switch .slider::after{content:'';position:absolute;width:16px;height:16px;background:var(--muted);border-radius:50%;top:2px;left:2px;transition:transform var(--t),background var(--t)}
+    .toggle-switch input:checked+.slider{background:var(--cyan);border-color:var(--cyan)}
+    .toggle-switch input:checked+.slider::after{transform:translateX(16px);background:#04120f}
+
+    /* PLAYER */
+    .player-wrapper{position:relative;width:100%;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden;aspect-ratio:16/9;transition:border-radius var(--t)}
+    .player-wrapper.theater{aspect-ratio:unset;height:80vh;border-radius:var(--r-sm)}
+    .empty-state{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:32px}
+    .empty-state.hidden{display:none}
+    .empty-icon-wrap{width:64px;height:64px;display:flex;align-items:center;justify-content:center;background:var(--cyan-dark);border:1px solid rgba(0,203,169,.2);border-radius:var(--r-md)}
+    .empty-icon-wrap .material-symbols-rounded{font-size:30px;color:var(--cyan);animation:pulse 2.4s ease-in-out infinite}
+    @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.55;transform:scale(.9)}}
+    .empty-state h3{font-family:var(--f-d);font-size:1.05rem;font-weight:700}
+    .empty-state p{font-size:.82rem;color:var(--muted);text-align:center;max-width:230px;line-height:1.55}
+    #video-frame{position:absolute;inset:0;width:100%;height:100%;border:none;display:none}
+    #video-frame.active{display:block}
+    .bg-overlay{position:absolute;inset:0;background:var(--surface);display:none;flex-direction:column;align-items:center;justify-content:center;gap:10px;z-index:10}
+    .bg-overlay.visible{display:flex}
+    .bg-overlay .material-symbols-rounded{font-size:36px;color:var(--cyan);animation:pulse 2.2s ease-in-out infinite}
+    .bg-overlay p{font-size:.83rem;color:var(--txt2)}
+
+    /* CONTROLS */
+    .controls{display:flex;gap:8px;flex-wrap:wrap}
+    .control-btn{display:flex;align-items:center;gap:7px;padding:9px 16px;background:var(--surface);color:var(--txt2);border:1px solid var(--border);border-radius:var(--r-md);font-family:var(--f-b);font-size:.82rem;font-weight:500;cursor:pointer;transition:background var(--t),color var(--t),border-color var(--t),transform var(--t);white-space:nowrap}
+    .control-btn .material-symbols-rounded{font-size:17px}
+    .control-btn:hover{background:var(--surface-3);color:var(--txt);border-color:var(--border-hi);transform:translateY(-1px)}
+    .control-btn:active{transform:translateY(0)}
+    .control-btn.active{background:var(--cyan-dim);color:var(--cyan);border-color:rgba(0,203,169,.3)}
+
+    /* HISTORY */
+    .history-section{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden}
+    .history-header{display:flex;align-items:center;justify-content:space-between;padding:13px 16px;border-bottom:1px solid var(--border)}
+    .history-title{display:flex;align-items:center;gap:7px;font-family:var(--f-d);font-size:.875rem;font-weight:600}
+    .history-title .material-symbols-rounded{font-size:17px;color:var(--cyan)}
+    .clear-btn{display:flex;align-items:center;gap:5px;padding:5px 10px;background:transparent;color:var(--muted);border:1px solid var(--border);border-radius:var(--r-sm);font-family:var(--f-b);font-size:.75rem;font-weight:500;cursor:pointer;transition:color var(--t),border-color var(--t),background var(--t)}
+    .clear-btn .material-symbols-rounded{font-size:14px}
+    .clear-btn:hover{color:#f47f7f;border-color:rgba(244,127,127,.3);background:rgba(244,127,127,.06)}
+    .history-list{display:flex;flex-direction:column}
+    .history-empty{padding:28px 16px;text-align:center;font-size:.82rem;color:var(--muted)}
+    .history-item{display:flex;align-items:center;gap:12px;padding:10px 16px;cursor:pointer;transition:background var(--t);border-bottom:1px solid var(--border);animation:slideIn .2s ease}
+    .history-item:last-child{border-bottom:none}
+    .history-item:hover{background:var(--surface-2)}
+    @keyframes slideIn{from{opacity:0;transform:translateY(-5px)}to{opacity:1;transform:translateY(0)}}
+    .history-thumb{flex-shrink:0;width:80px;height:45px;border-radius:8px;object-fit:cover;background:var(--surface-3)}
+    .history-info{flex:1;min-width:0}
+    .history-vid-id{font-size:.78rem;font-weight:600;color:var(--txt2);font-family:var(--f-d);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .history-date{font-size:.7rem;color:var(--muted);margin-top:2px}
+    .history-play{flex-shrink:0;width:30px;height:30px;display:flex;align-items:center;justify-content:center;background:var(--cyan-dark);border:1px solid rgba(0,203,169,.18);border-radius:50%;color:var(--cyan);transition:background var(--t),color var(--t)}
+    .history-play .material-symbols-rounded{font-size:16px}
+    .history-item:hover .history-play{background:var(--cyan);color:#04120f}
+
+    /* FOOTER */
+    footer{margin-top:8px;padding:20px 0 32px;display:flex;flex-direction:column;align-items:center;gap:12px}
+    .footer-brand{font-family:var(--f-d);font-size:.82rem;font-weight:600;color:var(--muted)}
+    .social-links{display:flex;gap:7px}
+    .social-btn{width:34px;height:34px;display:flex;align-items:center;justify-content:center;background:var(--surface);border:1px solid var(--border);border-radius:50%;color:var(--muted);text-decoration:none;transition:color var(--t),border-color var(--t),background var(--t),transform var(--t)}
+    .social-btn:hover{color:var(--cyan);border-color:rgba(0,203,169,.3);background:var(--cyan-dark);transform:translateY(-2px)}
+    .social-btn .material-symbols-rounded{font-size:16px}
+    .footer-note{font-size:.7rem;color:var(--muted);text-align:center;line-height:1.65}
+    .footer-note a{color:var(--cyan);text-decoration:none}
+    .footer-note a:hover{text-decoration:underline}
+
+    /* TOAST */
+    #toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(16px);background:var(--surface-3);color:var(--txt);border:1px solid var(--border-hi);border-radius:var(--r-md);padding:10px 20px;font-size:.83rem;font-weight:500;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .24s ease,transform .24s ease;box-shadow:0 8px 32px rgba(0,0,0,.45);z-index:9999}
+    #toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+    /* SHAKE */
+    @keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-7px)}40%{transform:translateX(7px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
+    .shake{animation:shake .38s ease}
+
+    @media(max-width:540px){body{padding:20px 12px 0}.brand h1{font-size:1.4rem}.controls{gap:6px}.control-btn{padding:8px 12px;font-size:.78rem}.play-btn{padding:9px 14px}}
+  </style>
 </head>
 <body>
 
-    <div class="container" id="main-container">
-        <header>
-            <h1>PawTube 🐾</h1>
-            <p class="subtitle">Distraction-free privacy player</p>
-        </header>
-        
-        <div class="search-section">
-            <div class="search-container" id="search-box">
-                <input type="text" id="url-input" placeholder="Paste YouTube link here..." autocomplete="off">
-                <button onclick="processInput()" aria-label="Play">
-                    <span class="material-symbols-rounded">play_arrow</span>
-                </button>
-            </div>
-            
-            <div class="settings-row">
-                <label class="toggle-switch">
-                    <input type="checkbox" id="autoplay-toggle" checked>
-                    <span class="slider"></span>
-                </label>
-                <span class="settings-label">Autoplay Video</span>
-            </div>
-        </div>
+<div class="app" id="main-container">
 
-        <div class="player-wrapper" id="player-wrapper">
-            <div class="empty-state" id="empty-state">
-                <span class="material-symbols-rounded pulse">smart_display</span>
-                <h3>Ready to Watch</h3>
-                <p style="margin:0; font-size:0.9rem;">Paste a URL above to load the player</p>
-            </div>
-            
-            <iframe id="video-frame" 
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                allowfullscreen>
-            </iframe>
-        </div>
-
-        <div class="controls">
-            <button class="control-btn" onclick="toggleTheaterMode()" id="theater-btn">
-                <span class="material-symbols-rounded" id="theater-icon">width_full</span>
-                Theater Mode
-            </button>
-            <button class="control-btn" id="bg-playback-btn" onclick="toggleBackgroundPlayback()">
-                <span class="material-symbols-rounded" id="bg-icon">headphones</span>
-                <span id="bg-text">Background Play</span>
-            </button>
-            <button class="control-btn" onclick="requestFloatingWindow()">
-                <span class="material-symbols-rounded">picture_in_picture_alt</span>
-                Floating Window
-            </button>
-            <button class="control-btn" onclick="shareCurrentVideo()">
-                <span class="material-symbols-rounded">share</span>
-                Share Link
-            </button>
-        </div>
-
-        <div class="history-container" id="history-container">
-            <div class="history-header">
-                <div class="history-title">
-                    <span class="material-symbols-rounded" style="color: var(--primary-cyan);">history</span> Recent Watches
-                </div>
-                <button class="clear-btn" onclick="clearHistory()">
-                    <span class="material-symbols-rounded" style="font-size: 16px;">delete</span> Clear
-                </button>
-            </div>
-            <div class="history-list" id="history-list">
-                </div>
-        </div>
+  <header>
+    <div class="brand">
+      <h1>Paw<span class="accent">Tube</span> 🐾</h1>
+      <span class="sub">Distraction-free &middot; Privacy-first</span>
     </div>
+    <div class="badge">
+      <span class="material-symbols-rounded">shield</span>
+      No-Cookie Embed
+    </div>
+  </header>
 
-    <footer>
-        <div class="crafted-with">
-            Crafted with 🐾 by PawDevs
-        </div>
-        
-        <div class="social-links">
-            <a href="https://github.com/pawdevs" target="_blank" class="social-btn" aria-label="GitHub">
-                <i class="fa-brands fa-github"></i>
-            </a>
-            <a href="https://pawdevs.com" target="_blank" class="social-btn" aria-label="Website">
-                <span class="material-symbols-rounded">language</span>
-            </a>
-            <a href="mailto:hello@pawdevs.com" class="social-btn" aria-label="Email">
-                <span class="material-symbols-rounded">mail</span>
-            </a>
-        </div>
+  <div class="search-card" id="search-box">
+    <div class="input-row">
+      <span class="material-symbols-rounded input-icon">link</span>
+      <input type="text" id="url-input" placeholder="Paste a YouTube link or video ID&hellip;" autocomplete="off" />
+      <button class="play-btn" onclick="processInput()" aria-label="Play video">
+        <span class="material-symbols-rounded">play_arrow</span>
+        Play
+      </button>
+    </div>
+    <div class="settings-row">
+      <label class="toggle-switch" title="Toggle autoplay">
+        <input type="checkbox" id="autoplay-toggle" checked />
+        <span class="slider"></span>
+      </label>
+      <span class="settings-label">Autoplay</span>
+    </div>
+  </div>
 
-        <div class="footer-content">
-            PawTube is a standalone utility project created for privacy testing.<br>
-            It does not collect user data. All rights reserved by PawDevs.
-        </div>
-    </footer>
+  <div class="player-wrapper" id="player-wrapper">
+    <div class="empty-state" id="empty-state">
+      <div class="empty-icon-wrap">
+        <span class="material-symbols-rounded">smart_display</span>
+      </div>
+      <h3>Ready to Watch</h3>
+      <p>Paste a YouTube URL above and press Play to start</p>
+    </div>
+    <div class="bg-overlay" id="bg-overlay">
+      <span class="material-symbols-rounded">headphones</span>
+      <p>Audio-only mode &mdash; screen is hidden</p>
+    </div>
+    <iframe id="video-frame"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+      allowfullscreen>
+    </iframe>
+  </div>
 
-    <div id="toast" class="toast"></div>
+  <div class="controls">
+    <button class="control-btn" onclick="toggleTheaterMode()" id="theater-btn">
+      <span class="material-symbols-rounded" id="theater-icon">width_full</span>
+      Theater Mode
+    </button>
+    <button class="control-btn" id="bg-playback-btn" onclick="toggleBackgroundPlayback()">
+      <span class="material-symbols-rounded" id="bg-icon">headphones</span>
+      <span id="bg-text">Background Play</span>
+    </button>
+    <button class="control-btn" onclick="requestFloatingWindow()">
+      <span class="material-symbols-rounded">picture_in_picture_alt</span>
+      Picture-in-Picture
+    </button>
+    <button class="control-btn" onclick="shareCurrentVideo()">
+      <span class="material-symbols-rounded">share</span>
+      Share
+    </button>
+  </div>
 
-    <script src="script.js"></script>
+  <div class="history-section" id="history-container">
+    <div class="history-header">
+      <div class="history-title">
+        <span class="material-symbols-rounded">history</span>
+        Recent Watches
+      </div>
+      <button class="clear-btn" onclick="clearHistory()">
+        <span class="material-symbols-rounded">delete</span>
+        Clear
+      </button>
+    </div>
+    <div class="history-list" id="history-list"></div>
+  </div>
+
+  <footer>
+    <div class="footer-brand">Crafted with 🐾 by PawDevs</div>
+    <div class="social-links">
+      <a href="https://github.com/thepawdevs" target="_blank" class="social-btn" aria-label="GitHub">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+      </a>
+      <a href="https://pawdevs.com" target="_blank" class="social-btn" aria-label="Website">
+        <span class="material-symbols-rounded">language</span>
+      </a>
+      <a href="mailto:hello@pawdevs.com" class="social-btn" aria-label="Email">
+        <span class="material-symbols-rounded">mail</span>
+      </a>
+    </div>
+    <div class="footer-note">
+      PawTube is a standalone utility for privacy-focused viewing.<br />
+      No data collected &mdash; All rights reserved by <a href="https://pawdevs.com" target="_blank">PawDevs</a>.
+    </div>
+  </footer>
+
+</div>
+
+<div id="toast"></div>
+
+<script>
+const HISTORY_KEY='pawtube_history',AUTOPLAY_KEY='pawtube_autoplay',MAX_HISTORY=12;
+let currentVideoId=null,theaterMode=false,bgPlayMode=false,toastTimer=null;
+
+document.addEventListener('DOMContentLoaded',()=>{
+  if(localStorage.getItem(AUTOPLAY_KEY)==='false')
+    document.getElementById('autoplay-toggle').checked=false;
+  const p=new URLSearchParams(location.search),v=p.get('v');
+  if(v)loadVideo(v,parseInt(p.get('t')||'0',10));
+  document.getElementById('url-input').addEventListener('keydown',e=>{if(e.key==='Enter')processInput();});
+  document.getElementById('autoplay-toggle').addEventListener('change',e=>{localStorage.setItem(AUTOPLAY_KEY,String(e.target.checked));});
+  renderHistory();
+});
+
+function extractVideoId(raw){
+  const s=raw.trim();
+  if(/^[a-zA-Z0-9_-]{11}$/.test(s))return s;
+  try{
+    const u=new URL(s);
+    if(u.hostname.includes('youtu.be'))return u.pathname.slice(1).split('?')[0];
+    if(u.hostname.includes('youtube.com'))
+      return u.searchParams.get('v')||u.pathname.split('/').find(seg=>/^[a-zA-Z0-9_-]{11}$/.test(seg))||null;
+  }catch(_){}
+  return null;
+}
+
+function extractTimestamp(raw){
+  try{
+    const t=new URL(raw.trim()).searchParams.get('t');
+    if(!t)return 0;
+    if(/^\d+$/.test(t))return parseInt(t,10);
+    let s=0;
+    const h=t.match(/(\d+)h/);if(h)s+=parseInt(h[1])*3600;
+    const m=t.match(/(\d+)m/);if(m)s+=parseInt(m[1])*60;
+    const sc=t.match(/(\d+)s/);if(sc)s+=parseInt(sc[1]);
+    return s;
+  }catch(_){return 0;}
+}
+
+function processInput(){
+  const raw=document.getElementById('url-input').value;
+  const id=extractVideoId(raw);
+  if(!id){shakeInput();showToast('⚠️  Invalid YouTube URL or video ID');return;}
+  loadVideo(id,extractTimestamp(raw));
+}
+
+function loadVideo(id,timestamp){
+  timestamp=timestamp||0;currentVideoId=id;
+  const autoplay=document.getElementById('autoplay-toggle').checked?1:0;
+  let src=`https://www.youtube-nocookie.com/embed/${id}?rel=0&modestbranding=1&autoplay=${autoplay}`;
+  if(timestamp>0)src+=`&start=${timestamp}`;
+  const frame=document.getElementById('video-frame');
+  frame.src=src;frame.classList.add('active');
+  document.getElementById('empty-state').classList.add('hidden');
+  document.getElementById('bg-overlay').classList.remove('visible');
+  bgPlayMode=false;
+  document.getElementById('bg-playback-btn').classList.remove('active');
+  document.getElementById('bg-text').textContent='Background Play';
+  document.getElementById('bg-icon').textContent='headphones';
+  saveHistory(id);renderHistory();
+  const params=new URLSearchParams();params.set('v',id);
+  if(timestamp>0)params.set('t',timestamp);
+  history.replaceState(null,'',`?${params.toString()}`);
+}
+
+function toggleTheaterMode(){
+  theaterMode=!theaterMode;
+  document.getElementById('player-wrapper').classList.toggle('theater',theaterMode);
+  document.getElementById('theater-btn').classList.toggle('active',theaterMode);
+  document.getElementById('theater-icon').textContent=theaterMode?'width_normal':'width_full';
+}
+
+function toggleBackgroundPlayback(){
+  bgPlayMode=!bgPlayMode;
+  document.getElementById('bg-overlay').classList.toggle('visible',bgPlayMode);
+  document.getElementById('bg-playback-btn').classList.toggle('active',bgPlayMode);
+  document.getElementById('bg-text').textContent=bgPlayMode?'Show Video':'Background Play';
+  document.getElementById('bg-icon').textContent=bgPlayMode?'visibility':'headphones';
+}
+
+function requestFloatingWindow(){
+  if(!currentVideoId){showToast('▶  Load a video first');return;}
+  showToast("💡  Use your browser's PiP button inside the video");
+}
+
+function shareCurrentVideo(){
+  if(!currentVideoId){showToast('▶  Load a video first');return;}
+  const url=`${location.origin}${location.pathname}?v=${currentVideoId}`;
+  if(navigator.share)navigator.share({title:'PawTube',url}).catch(()=>{});
+  else navigator.clipboard.writeText(url).then(()=>showToast('🔗  Link copied!')).catch(()=>showToast('Could not copy link'));
+}
+
+function saveHistory(id){
+  let h=getHistory().filter(i=>i.id!==id);
+  h.unshift({id,ts:Date.now()});
+  if(h.length>MAX_HISTORY)h=h.slice(0,MAX_HISTORY);
+  localStorage.setItem(HISTORY_KEY,JSON.stringify(h));
+}
+
+function getHistory(){
+  try{return JSON.parse(localStorage.getItem(HISTORY_KEY))||[];}catch(_){return[];}
+}
+
+function clearHistory(){
+  localStorage.removeItem(HISTORY_KEY);renderHistory();showToast('🗑️  History cleared');
+}
+
+function renderHistory(){
+  const list=document.getElementById('history-list'),items=getHistory();
+  if(!items.length){list.innerHTML='<div class="history-empty">Your recently watched videos will appear here</div>';return;}
+  list.innerHTML=items.map(item=>{
+    const thumb=`https://i.ytimg.com/vi/${item.id}/mqdefault.jpg`;
+    const date=new Date(item.ts).toLocaleString(undefined,{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'});
+    return `<div class="history-item" onclick="loadVideo('${item.id}')">
+      <img class="history-thumb" src="${thumb}" alt="" loading="lazy" onerror="this.style.background='var(--surface-3)'"/>
+      <div class="history-info">
+        <div class="history-vid-id">${item.id}</div>
+        <div class="history-date">${date}</div>
+      </div>
+      <div class="history-play"><span class="material-symbols-rounded">play_arrow</span></div>
+    </div>`;
+  }).join('');
+}
+
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>t.classList.remove('show'),2800);
+}
+
+function shakeInput(){
+  const b=document.getElementById('search-box');
+  b.classList.remove('shake');void b.offsetWidth;b.classList.add('shake');
+  setTimeout(()=>b.classList.remove('shake'),500);
+}
+</script>
 </body>
 </html>

@@ -21,7 +21,7 @@
 * ⚙️ **Autoplay Preferences:** Toggle video autoplay on or off, with your preference saved locally.
 
 ## 🚀 Live Demo
-*(You can add your live hosting link here, e.g., [PawTube](https://thepawdevs.github.io/PawTube/))*
+ *To experience this project click [PawTube](https://thepawdevs.github.io/PawTube/)*
 
 ---
 

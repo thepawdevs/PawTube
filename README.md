@@ -158,7 +158,7 @@ See [`LICENSE`](LICENSE) for full terms — including important notes on YouTube
 
 PawTube is a project by **PawDevs** — a small indie dev brand building privacy-first, minimal tools.
 
-- 🌐 Website: [pawdevs.com](https://pawdevs.com)
+- 🌐 Website: [PawDevs](https://thepawdevs.github.io/thepawdevs/)
 - 📺 PawTube: [pawtube.vercel.app](https://pawtube.vercel.app/)
 - 🤖 Telegram Bot: [@PawTubeRobot](https://t.me/PawTubeRobot)
 - 📧 Contact: [skyairpaw@gmail.com](mailto:skyairpaw@gmail.com)

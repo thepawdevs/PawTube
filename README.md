@@ -1,74 +1,171 @@
 # 🐾 PawTube
 
-![HTML5](https://img.shields.io/badge/html5-%23E34F26.svg?style=flat-square&logo=html5&logoColor=white)
-![CSS3](https://img.shields.io/badge/css3-%231572B6.svg?style=flat-square&logo=css3&logoColor=white)
-![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=flat-square&logo=javascript&logoColor=%23F7DF1E)
-![License](https://img.shields.io/badge/license-MIT-green?style=flat-square)
+[![HTML5](https://img.shields.io/badge/html5-%23E34F26.svg?style=flat-square&logo=html5&logoColor=white)](https://pawtube.vercel.app/)
+[![CSS3](https://img.shields.io/badge/css3-%231572B6.svg?style=flat-square&logo=css3&logoColor=white)](https://pawtube.vercel.app/)
+[![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=flat-square&logo=javascript&logoColor=%23F7DF1E)](https://pawtube.vercel.app/)
+[![License](https://img.shields.io/badge/license-MIT-green?style=flat-square)](LICENSE)
+[![Vercel](https://img.shields.io/badge/hosted%20on-Vercel-black?style=flat-square&logo=vercel)](https://pawtube.vercel.app/)
+[![Telegram Bot](https://img.shields.io/badge/Telegram%20Bot-PawTubeRobot-2CA5E0?style=flat-square&logo=telegram)](https://t.me/PawTubeRobot)
 
-**PawTube** is a minimalist, distraction-free, and privacy-enhanced YouTube video player. Built with a modern Material 3 Dark Monet aesthetic, it strips away comments, algorithmic recommendations, and tracking cookies, allowing you to focus purely on the content you want to watch.
+> **PawTube** is a minimalist, distraction-free, and privacy-enhanced YouTube video player.  
+> No ads. No algorithm. No tracking. Just the video. 🐾
+
+---
+
+## 🌐 Live App
+
+**[▶ pawtube.vercel.app](https://pawtube.vercel.app/)**
 
 ---
 
 ## ✨ Features
 
-* 🔒 **Privacy-First:** Utilizes YouTube's official `youtube-nocookie.com` embed API to prevent tracking cookies.
-* 🎧 **Background Play (Audio Mode):** Instantly hides the video screen to save battery and reduce visual distraction while keeping the audio active.
-* 🎬 **Theater Mode:** Expands the player for a cinematic, edge-to-edge viewing experience.
-* 🖼️ **Picture-in-Picture:** Supports floating window playback for multitasking.
-* 🕰️ **Visual Local History:** Automatically saves your recently watched videos with thumbnail previews. Data is strictly stored in your browser's `localStorage` and can be cleared with one click.
-* 🔗 **Smart URLs & Timestamps:** Generates shareable links (e.g., `?v=ID&t=120`) that automatically load the video and start at your exact timestamp.
-* ✨ **Material 3 UI:** Features a custom dark-teal aesthetic, glassmorphism, floating icons, and smooth UI animations (like error shaking and staggered loading).
-* ⚙️ **Autoplay Preferences:** Toggle video autoplay on or off, with your preference saved locally.
+### 🔒 Privacy-First Playback
+Uses YouTube's official **`youtube-nocookie.com`** embed API — no tracking cookies are set unless you directly interact with the player. Your watch history stays *yours*.
 
-## 🚀 Live Demo
- *To experience this project click [PawTube](https://thepawdevs.github.io/PawTube/)*
+### 🔗 Unique Shareable Video URLs
+Every video you load gets its own **unique, shareable URL** — for example:
+```
+https://pawtube.vercel.app/?v=dQw4w9WgXcW
+```
+You can copy and share this link with anyone. They'll land directly on that video inside PawTube, with no YouTube interface, ads, or recommendations in the way. Timestamps are also supported:
+```
+https://pawtube.vercel.app/?v=dQw4w9WgXcW&t=42
+```
+This makes PawTube perfect for sharing clean, focused viewing experiences.
+
+### 🤖 PawTube Telegram Bot
+**[@PawTubeRobot](https://t.me/PawTubeRobot)** — the companion bot for PawTube!
+
+Just send any YouTube URL to the bot in Telegram, and it will instantly reply with the equivalent **PawTube playback link** — ready to watch, ad-free and privacy-safe.
+
+**Supported URL formats:**
+- `https://www.youtube.com/watch?v=VIDEO_ID`
+- `https://youtu.be/VIDEO_ID`
+- `https://youtube.com/shorts/VIDEO_ID`
+- `https://m.youtube.com/watch?v=VIDEO_ID`
+
+> 👉 **[Open @PawTubeRobot on Telegram](https://t.me/PawTubeRobot)**
+
+### 🎧 Audio / Background Mode
+Instantly hide the video screen to save battery and reduce visual distraction while keeping audio active — great for music and podcasts.
+
+### 🎬 Theater Mode
+Expand the player to a cinematic, edge-to-edge viewing experience with a single click.
+
+### 🖼️ Picture-in-Picture
+Supports floating window playback so you can multitask without interrupting your video.
+
+### 🕰️ Local Watch History
+Automatically saves recently watched videos with thumbnail previews. Data is stored strictly in your **browser's `localStorage`** — it never leaves your device. Clear it with one click anytime.
+
+### ⚙️ Autoplay Toggle
+Set your autoplay preference once — PawTube remembers it locally across sessions.
+
+### ✨ Material 3 Dark UI
+Custom dark-teal aesthetic with glassmorphism, floating icons, gradient headings, dot-grid texture, and smooth animations — including error shaking and staggered loading effects.
 
 ---
 
-## 🛠️ Getting Started
+## 🚀 Getting Started
 
-PawTube is a 100% static, front-end application. There are no build steps, dependencies, or node modules required. 
+PawTube is a **100% static, front-end application** — no build steps, no npm, no dependencies.
+
+### Clone & Run Locally
+
+```bash
+git clone https://github.com/thepawdevs/PawTube.git
+cd PawTube
+# Open index.html directly in your browser
+```
+
+That's it. No server needed.
 
 ### Prerequisites
-* A modern web browser (Chrome, Firefox, Safari, Edge, etc.)
 
-### Installation
-1. Clone the repository:
-   ```bash
-   git clone [https://github.com/thepawdevs/pawtube.git](https://github.com/thepawdevs/pawtube.git)
-   ```
-2. Navigate to the project directory:
-   ```bash
-   cd pawtube
-   ```
-3. Open `index.html` directly in your browser.
+Any modern web browser (Chrome, Firefox, Safari, Edge).
 
 ---
 
 ## 📂 Project Structure
 
-```text
-pawtube/
-├── index.html    # The main HTML structure (includes CSS & JS for single-file deployment)
 ```
+PawTube/
+├── index.html    # App structure & layout
+├── style.css     # Material 3 Dark Monet theming & animations
+├── script.js     # Player logic, URL handling & history
+└── LICENSE       # MIT License with YouTube Compliance Addendum
+```
+
+---
+
+## 🔗 How Shareable Links Work
+
+When you paste a YouTube URL or Video ID into PawTube, the browser address bar updates automatically to reflect the video:
+
+```
+https://pawtube.vercel.app/?v=VIDEO_ID
+```
+
+This URL is **fully shareable** — send it to a friend, post it anywhere, or bookmark it. When opened, PawTube loads that video directly without needing any input. Timestamps (`&t=SECONDS`) are also preserved so viewers start exactly where you want them to.
+
+---
+
+## 🤖 Telegram Bot Integration
+
+The **[@PawTubeRobot](https://t.me/PawTubeRobot)** makes converting YouTube links effortless from Telegram.
+
+**How it works:**
+
+1. Open [@PawTubeRobot](https://t.me/PawTubeRobot) on Telegram
+2. Send any YouTube video URL
+3. The bot replies with a **Watch on PawTube** button
+4. Tap it — you're watching instantly, ad-free 🐾
+
+No setup. No account. Works from any chat or group.
+
+---
 
 ## 🤝 Contributing
 
-Contributions make the open-source community an amazing place to learn, inspire, and create. Any contributions you make to PawTube are **greatly appreciated**.
+Contributions are welcome and appreciated! Here's how to get involved:
 
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
+1. Fork the repository
+2. Create your feature branch:
+   ```bash
+   git checkout -b feature/YourFeature
+   ```
+3. Commit your changes:
+   ```bash
+   git commit -m "Add YourFeature"
+   ```
+4. Push to your branch:
+   ```bash
+   git push origin feature/YourFeature
+   ```
 5. Open a Pull Request
+
+---
 
 ## 📜 License
 
-Distributed under the MIT License. See `LICENSE` for more information.
+Distributed under the **MIT License with YouTube Compliance Addendum**.  
+See [`LICENSE`](LICENSE) for full terms — including important notes on YouTube ToS compliance and `youtube-nocookie.com` usage.
+
+---
 
 ## 🐾 About PawDevs
 
-PawTube is a standalone utility project created by **PawDevs**. 
-Visit our main site at [PawDevs](https://thepawdevs.github.io/thepawdevs/) or reach out to us at [skyairpaw@gmail.com](mailto:skyairpaw@gmail.com).
+PawTube is a project by **PawDevs** — a small indie dev brand building privacy-first, minimal tools.
 
-> **Disclaimer:** PawTube is an experimental project made for testing and privacy purposes. It does not violate YouTube Policies and utilizes official APIs.
+- 🌐 Website: [pawdevs.com](https://pawdevs.com)
+- 📺 PawTube: [pawtube.vercel.app](https://pawtube.vercel.app/)
+- 🤖 Telegram Bot: [@PawTubeRobot](https://t.me/PawTubeRobot)
+- 📧 Contact: [skyairpaw@gmail.com](mailto:skyairpaw@gmail.com)
+
+---
+
+> **Disclaimer:** PawTube is an independent, experimental project created for privacy and testing purposes.  
+> It does not violate YouTube's Terms of Service and exclusively uses official, permitted embedding methods via `youtube-nocookie.com`.  
+> PawTube is not affiliated with, endorsed by, or connected to YouTube or Google LLC in any way.
+> 
